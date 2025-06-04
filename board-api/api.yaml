@@ -1,0 +1,151 @@
+schemas:
+  BoardNode:
+    type: object
+    required:
+      - id
+      - text
+      - x
+      - y
+    properties:
+      id:
+        type: string
+      text:
+        type: string
+      x:
+        type: number
+      y:
+        type: number
+  BoardNodePositionUpdate:
+    type: object
+    required:
+      - id
+      - x
+      - y
+    properties:
+      id:
+        type: string
+      x:
+        type: number
+      y:
+        type: number
+  CreateBoardNode:
+    type: object
+    required:
+      - id
+      - text
+      - x
+      - y
+    properties:
+      id:
+        type: string
+      text:
+        type: string
+      x:
+        type: number
+      y:
+        type: number
+
+getBoardNodes:
+  summary: Get board nodes
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: boardId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Board nodes
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/schemas/BoardNode'
+    '401':
+      $ref: '../shared/responses.yaml#/UnauthorizedError'
+    '404':
+      $ref: '../shared/responses.yaml#/NotFoundError'
+
+updateBoardNodesPosition:
+  summary: Update board nodes position
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: boardId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: '#/schemas/BoardNodePositionUpdate'
+  responses:
+    '200':
+      description: Board nodes updated
+    '401':
+      $ref: '../shared/responses.yaml#/UnauthorizedError'
+    '404':
+      $ref: '../shared/responses.yaml#/NotFoundError'
+
+createBoardNode:
+  summary: Create board node
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: boardId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/schemas/CreateBoardNode'
+  responses:
+    '200':
+      description: Board node created
+      content:
+        application/json:
+          schema:
+            $ref: '#/schemas/BoardNode'
+    '401':
+      $ref: '../shared/responses.yaml#/UnauthorizedError'
+    '404':
+      $ref: '../shared/responses.yaml#/NotFoundError'
+
+
+deleteBoardNodes:
+  summary: Delete board nodes
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: boardId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: string
+  responses:
+    '200':
+      description: Board nodes deleted
+    '401':
+      $ref: '../shared/responses.yaml#/UnauthorizedError'
+    '404':
+      $ref: '../shared/responses.yaml#/NotFoundError'
