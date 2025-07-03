@@ -3,6 +3,7 @@
 Копируем `7-auth.yaml` -> `src/shared/api/schema/endpoints/auth.yaml`
 
 `src/shared/api/schema/shared/responses.yaml`
+
 ```yaml
 BadRequestError:
   description: Bad request
@@ -10,10 +11,10 @@ BadRequestError:
     application/json:
       schema:
         $ref: "#/schemas/Error"
-
 ```
 
 `src/shared/api/schema/main.yaml`
+
 ```yaml
 paths:
   /auth/login:
@@ -26,10 +27,10 @@ paths:
 ```
 
 Генерируем новые типы
+
 ```bash
 npm run api
 ```
-
 
 **2. Добавляем моки запросов auth**
 Копируем `7-auth.ts` -> `src/shared/api/mocks/handlers/auth.ts`
@@ -37,15 +38,11 @@ npm run api
 Регистрируем
 
 `src/shared/api/mocks/handlers/index.ts`
-```ts
 
+```ts
 import { authHandlers } from "./auth";
 
-
-export const handlers = [
-  ...authHandlers,
-];
-
+export const handlers = [...authHandlers];
 ```
 
 **3. Устанавливаем зависимости и добавляем компоненты**

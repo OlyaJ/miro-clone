@@ -10,22 +10,21 @@ schemas:
       name:
         type: string
 
-
 getAllBoards:
   summary: Get all boards for current user
   security:
     - bearerAuth: []
   responses:
-    '200':
+    "200":
       description: List of boards
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: '#/schemas/Board'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
+              $ref: "#/schemas/Board"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
 
 createBoard:
   summary: Create a new board
@@ -43,15 +42,14 @@ createBoard:
             name:
               type: string
   responses:
-    '201':
+    "201":
       description: Board created successfully
       content:
         application/json:
           schema:
-            $ref: '#/schemas/Board'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-
+            $ref: "#/schemas/Board"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
 
 deleteBoard:
   summary: Delete a board
@@ -64,9 +62,9 @@ deleteBoard:
       schema:
         type: string
   responses:
-    '204':
+    "204":
       description: Board deleted successfully
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-    '404':
-      $ref: '../shared/responses.yaml#/NotFoundError'
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"

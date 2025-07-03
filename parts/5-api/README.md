@@ -3,18 +3,17 @@
 ```bash
 npm i -D openapi-typescript msw openapi-msw
 
-npm i openapi-fetch openapi-react-query @tanstack/react-query 
+npm i openapi-fetch openapi-react-query @tanstack/react-query
 ```
 
 **2 Копируем пример api схемы**
 
 Копируем `5-api/shared/api/schema` -> `src/shared/api/schema`
 
-
-
 **3 Добавляем комманду для генерации api и запускаем**
 
 `package.json`
+
 ```ts
 {
   "scripts": {
@@ -26,6 +25,7 @@ npm i openapi-fetch openapi-react-query @tanstack/react-query
 _Часто схема будет в отдельном репозитории. В таком случае просто укажите путь в другой репозиторий. Или прямую ссылку на схему_
 
 `package.json`
+
 ```ts
 {
   "scripts": {
@@ -35,6 +35,7 @@ _Часто схема будет в отдельном репозитории. 
 ```
 
 `package.json`
+
 ```ts
 {
   "scripts": {
@@ -46,13 +47,13 @@ _Часто схема будет в отдельном репозитории. 
 **4 добавляем entrypoint для сгенерированных типов**
 
 `src/shared/api/schema/index.ts`
+
 ```ts
 import { paths, components } from "./generated";
 
 export type ApiPaths = paths;
 export type ApiSchemas = components["schemas"];
 ```
-
 
 **5 Создаём инстанс api на основе типов**
 
@@ -67,6 +68,7 @@ export type ApiSchemas = components["schemas"];
 Регистрируем
 
 `app/router.tsx`
+
 ```tsx
 export const router = createBrowserRouter([
   {
@@ -76,8 +78,8 @@ export const router = createBrowserRouter([
       </Providers>
     ),
     //....
-  }
-])
+  },
+]);
 ```
 
 **7 Добавляем моки**
@@ -110,16 +112,14 @@ enableMocking().then(() => {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <RouterProvider router={router} />
-    </StrictMode>
+    </StrictMode>,
   );
 });
 ```
 
-
 **8 Добавляем моки для оставшихся запросов и тестируем**
 
 ```tsx
-
 const queryClient = useQueryClient();
 const boardsQuery = useQuery(rqClient.queryOptions("get", "/boards"));
 
@@ -129,18 +129,17 @@ const deleteBoardMutation = rqClient.useMutation(
   {
     onSettled: () => {
       return queryClient.invalidateQueries(
-        rqClient.queryOptions("get", "/boards")
+        rqClient.queryOptions("get", "/boards"),
       );
     },
-  }
+  },
 );
 
 const createBoardMutation = rqClient.useMutation("post", "/boards", {
   onSettled: () => {
     return queryClient.invalidateQueries(
-      rqClient.queryOptions("get", "/boards")
+      rqClient.queryOptions("get", "/boards"),
     );
   },
 });
 ```
-

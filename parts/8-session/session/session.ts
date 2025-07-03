@@ -55,7 +55,7 @@ export const useSession = createGStore(() => {
 
   const session = useMemo(
     () => (!token ? null : jwtDecode<Session>(token)),
-    [token]
+    [token],
   );
 
   return {

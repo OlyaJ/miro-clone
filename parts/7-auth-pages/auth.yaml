@@ -46,7 +46,7 @@ schemas:
       accessToken:
         type: string
       user:
-        $ref: '#/schemas/User'
+        $ref: "#/schemas/User"
 
 login:
   summary: Login user
@@ -55,16 +55,16 @@ login:
     content:
       application/json:
         schema:
-          $ref: '#/schemas/LoginRequest'
+          $ref: "#/schemas/LoginRequest"
   responses:
-    '200':
+    "200":
       description: Login successful
       content:
         application/json:
           schema:
-            $ref: '#/schemas/AuthResponse'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
+            $ref: "#/schemas/AuthResponse"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
 
 register:
   summary: Register new user
@@ -73,13 +73,13 @@ register:
     content:
       application/json:
         schema:
-          $ref: '#/schemas/RegisterRequest'
+          $ref: "#/schemas/RegisterRequest"
   responses:
-    '201':
+    "201":
       description: Registration successful
       content:
         application/json:
           schema:
-            $ref: '#/schemas/AuthResponse'
-    '400':
-      $ref: '../shared/responses.yaml#/BadRequestError'
+            $ref: "#/schemas/AuthResponse"
+    "400":
+      $ref: "../shared/responses.yaml#/BadRequestError"

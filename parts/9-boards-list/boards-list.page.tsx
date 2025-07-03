@@ -97,7 +97,7 @@ function BoardsListPage() {
           loadMore();
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     if (loadMoreRef.current) {
@@ -114,7 +114,7 @@ function BoardsListPage() {
   const createBoardMutation = rqClient.useMutation("post", "/boards", {
     onSettled: async () => {
       await queryClient.invalidateQueries(
-        rqClient.queryOptions("get", "/boards")
+        rqClient.queryOptions("get", "/boards"),
       );
       setPage(1);
     },
@@ -126,10 +126,10 @@ function BoardsListPage() {
     {
       onSettled: async () => {
         await queryClient.invalidateQueries(
-          rqClient.queryOptions("get", "/boards")
+          rqClient.queryOptions("get", "/boards"),
         );
       },
-    }
+    },
   );
 
   const toggleFavoriteMutation = rqClient.useMutation(
@@ -138,10 +138,10 @@ function BoardsListPage() {
     {
       onSettled: async () => {
         await queryClient.invalidateQueries(
-          rqClient.queryOptions("get", "/boards")
+          rqClient.queryOptions("get", "/boards"),
         );
       },
-    }
+    },
   );
 
   const handleToggleFavorite = (board: ApiSchemas["Board"]) => {

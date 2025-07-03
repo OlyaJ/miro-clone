@@ -56,18 +56,18 @@ getBoardNodes:
       schema:
         type: string
   responses:
-    '200':
+    "200":
       description: Board nodes
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: '#/schemas/BoardNode'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-    '404':
-      $ref: '../shared/responses.yaml#/NotFoundError'
+              $ref: "#/schemas/BoardNode"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"
 
 updateBoardNodesPosition:
   summary: Update board nodes position
@@ -86,14 +86,14 @@ updateBoardNodesPosition:
         schema:
           type: array
           items:
-            $ref: '#/schemas/BoardNodePositionUpdate'
+            $ref: "#/schemas/BoardNodePositionUpdate"
   responses:
-    '200':
+    "200":
       description: Board nodes updated
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-    '404':
-      $ref: '../shared/responses.yaml#/NotFoundError'
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"
 
 createBoardNode:
   summary: Create board node
@@ -110,19 +110,18 @@ createBoardNode:
     content:
       application/json:
         schema:
-          $ref: '#/schemas/CreateBoardNode'
+          $ref: "#/schemas/CreateBoardNode"
   responses:
-    '200':
+    "200":
       description: Board node created
       content:
         application/json:
           schema:
-            $ref: '#/schemas/BoardNode'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-    '404':
-      $ref: '../shared/responses.yaml#/NotFoundError'
-
+            $ref: "#/schemas/BoardNode"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"
 
 deleteBoardNodes:
   summary: Delete board nodes
@@ -143,9 +142,9 @@ deleteBoardNodes:
           items:
             type: string
   responses:
-    '200':
+    "200":
       description: Board nodes deleted
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-    '404':
-      $ref: '../shared/responses.yaml#/NotFoundError'
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"

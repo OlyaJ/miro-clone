@@ -1,6 +1,7 @@
 **1. Добавляем в схему bearer токен**
 
 `src/shared/api/schema/main.yaml`
+
 ```yaml
 components:
   securitySchemes:
@@ -13,6 +14,7 @@ components:
 Добавляем к запросам что им нужна авторизация
 
 `src/shared/api/schemas/endpoints/boards.yaml`
+
 ```yaml
 createBoard:
   summary: Create a new board
@@ -29,43 +31,45 @@ npx @redocly/cli@latest bundle ./src/shared/api/schema/main.yaml -o bundle.yaml
 **2. Добавляем запрос на обновление токена**
 
 `src/shared/api/schema/endpoints/auth.yaml`
+
 ```yaml
 refresh:
   summary: Refresh access token
   parameters:
-  - in: cookie
-    name: refreshToken
-    schema:
-      type: string
+    - in: cookie
+      name: refreshToken
+      schema:
+        type: string
   responses:
-    '200':
+    "200":
       description: Access token refreshed successfully
       content:
         application/json:
           schema:
-            $ref: '#/schemas/AuthResponse'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-
+            $ref: "#/schemas/AuthResponse"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
 ```
 
 `src/shared/api/schema/main.yaml`
-```yaml
-  /auth/refresh:
-    post:
-      $ref: "./endpoints/auth.yaml#/refresh"
 
+```yaml
+/auth/refresh:
+  post:
+    $ref: "./endpoints/auth.yaml#/refresh"
 ```
 
 **3. Добавляем моки jwt токенов**
 
 Меняем путь для запросов, что бы не возиться с cors
 `env.development`
+
 ```bash
 VITE_API_BASE_URL=/api
 ```
 
 Устанавливаем библиотеки
+
 ```bash
 npm i -D jose
 npm i jwt-decode
@@ -86,7 +90,6 @@ const REFRESH_TOKEN_EXPIRY = "7d";
 export function createRefreshTokenCookie(refreshToken: string) {
   return `refreshToken=${refreshToken}; Max-Age=604800`;
 }
-
 
 async function generateTokens(session: Session) {
   const accessToken = await new SignJWT(session)
@@ -126,11 +129,12 @@ export async function verifyTokenOrThrow(request: Request): Promise<Session> {
 ```
 
 Изменяем работу запросов логина и регистрации
+
 ```ts
- const { accessToken, refreshToken } = await generateTokens({
-      userId: user.id,
-      email: user.email,
-    });
+const { accessToken, refreshToken } = await generateTokens({
+  userId: user.id,
+  email: user.email,
+});
 return HttpResponse.json(
   {
     accessToken,
@@ -146,64 +150,65 @@ return HttpResponse.json(
 ```
 
 Генерируем новые типы
+
 ```bash
 npm run api
 ```
-
 
 Добавляем мок refresh запроса
 
 ```ts
 http.post("/auth/refresh", async ({ cookies }) => {
-    const refreshToken = cookies.refreshToken;
+  const refreshToken = cookies.refreshToken;
 
-    if (!refreshToken) {
-      return HttpResponse.json(
-        {
-          message: "Refresh token не найден",
-          code: "REFRESH_TOKEN_MISSING",
-        },
-        { status: 401 },
-      );
+  if (!refreshToken) {
+    return HttpResponse.json(
+      {
+        message: "Refresh token не найден",
+        code: "REFRESH_TOKEN_MISSING",
+      },
+      { status: 401 },
+    );
+  }
+
+  try {
+    const session = await verifyToken(refreshToken);
+    const user = mockUsers.find((u) => u.id === session.userId);
+
+    if (!user) {
+      throw new Error("User not found");
     }
 
-    try {
-      const session = await verifyToken(refreshToken);
-      const user = mockUsers.find((u) => u.id === session.userId);
+    const { accessToken, refreshToken: newRefreshToken } = await generateTokens(
+      {
+        userId: user.id,
+        email: user.email,
+      },
+    );
 
-      if (!user) {
-        throw new Error("User not found");
-      }
-
-      const { accessToken, refreshToken: newRefreshToken } =
-        await generateTokens({
-          userId: user.id,
-          email: user.email,
-        });
-
-      return HttpResponse.json(
-        {
-          accessToken,
-          user,
+    return HttpResponse.json(
+      {
+        accessToken,
+        user,
+      },
+      {
+        status: 200,
+        headers: {
+          "Set-Cookie": createRefreshTokenCookie(newRefreshToken),
         },
-        {
-          status: 200,
-          headers: {
-            "Set-Cookie": createRefreshTokenCookie(newRefreshToken),
-          },
-        },
-      );
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-      return HttpResponse.json(
-        {
-          message: "Недействительный refresh token",
-          code: "INVALID_REFRESH_TOKEN",
-        },
-        { status: 401 },
-      );
-    }
-  })
+      },
+    );
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    return HttpResponse.json(
+      {
+        message: "Недействительный refresh token",
+        code: "INVALID_REFRESH_TOKEN",
+      },
+      { status: 401 },
+    );
+  }
+});
 ```
 
 **4 Реализуем модуль для работы с сессие на клиенте**
@@ -213,6 +218,7 @@ http.post("/auth/refresh", async ({ cookies }) => {
 ```bash
 npm i create-gstore
 ```
+
 Можете просто zustand
 
 ```bash
@@ -291,7 +297,6 @@ export const useSession = createGStore(() => {
 
   return { refreshToken, login, logout, session };
 });
-
 ```
 
 ```ts
@@ -325,9 +330,7 @@ export async function protectedLoader() {
 
 ```
 
-
 **5 Добавляем middleware для добавления токена в заголовок**
-
 
 ```ts
 import createFetchClient from "openapi-fetch";
@@ -368,13 +371,11 @@ fetchClient.use({
     }
   },
 });
-
 ```
 
 **6 Подключаем модуль сессии в приложение**
 
-
-+ Переносим `enableMocking` в `src/shared/api/mocks/index.ts`
+- Переносим `enableMocking` в `src/shared/api/mocks/index.ts`
 
 Добавляем использование сессии в формах входа и регистрации
 
@@ -389,6 +390,7 @@ const loginMutation = publicRqClient.useMutation("post", "/auth/login", {
 ```
 
 Подключаем защиту
+
 ```tsx
       {
         loader: protectedLoader,
@@ -412,6 +414,7 @@ const loginMutation = publicRqClient.useMutation("post", "/auth/login", {
 ```
 
 Верстка заголовка
+
 ```tsx
 import { ROUTES } from "@/shared/model/routes";
 import { useSession } from "@/shared/model/session";
@@ -448,5 +451,4 @@ export function AppHeader() {
     </header>
   );
 }
-
 ```

@@ -7,6 +7,7 @@ npm i --save-dev eslint-plugin-boundaries eslint-import-resolver-typescript vite
 **2 Добавляем `path alias` для импортов**
 
 `tsconfig.json`
+
 ```json
 {
   "files": [],
@@ -24,6 +25,7 @@ npm i --save-dev eslint-plugin-boundaries eslint-import-resolver-typescript vite
 ```
 
 `tsconfig.app.json`
+
 ```json
 {
   "compilerOptions": {
@@ -37,6 +39,7 @@ npm i --save-dev eslint-plugin-boundaries eslint-import-resolver-typescript vite
 ```
 
 `vite.config.ts`
+
 ```ts
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
@@ -57,7 +60,7 @@ import { eslintBoundariesConfig } from "./eslint.boundaries.js";
 
 export default tseslint.config(
   // Остальной конфиг
-  eslintBoundariesConfig
+  eslintBoundariesConfig,
 );
 ```
 
@@ -66,7 +69,7 @@ export default tseslint.config(
 ```bash
 npm run build
 ```
+
 ```bash
 npm run lint
 ```
-

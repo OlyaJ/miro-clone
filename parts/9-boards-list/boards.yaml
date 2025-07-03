@@ -48,13 +48,12 @@ schemas:
       list:
         type: array
         items:
-          $ref: '#/schemas/Board'
+          $ref: "#/schemas/Board"
       total:
         type: integer
       totalPages:
         type: integer
 
-      
 getAllBoards:
   summary: Get all boards for current user
   security:
@@ -93,14 +92,14 @@ getAllBoards:
       schema:
         type: string
   responses:
-    '200':
+    "200":
       description: List of boards
       content:
         application/json:
           schema:
-            $ref: '#/schemas/BoardsList'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
+            $ref: "#/schemas/BoardsList"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
 
 getBoardById:
   summary: Get a board by id
@@ -113,30 +112,30 @@ getBoardById:
       schema:
         type: string
   responses:
-    '200':
+    "200":
       description: Board
       content:
         application/json:
           schema:
-            $ref: '#/schemas/Board'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-    '404':
-      $ref: '../shared/responses.yaml#/NotFoundError'
+            $ref: "#/schemas/Board"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"
 
 createBoard:
   summary: Create a new board
   security:
     - bearerAuth: []
   responses:
-    '201':
+    "201":
       description: Board created successfully
       content:
         application/json:
           schema:
-            $ref: '#/schemas/Board'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
+            $ref: "#/schemas/Board"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
 
 renameBoard:
   summary: Rename a board
@@ -153,16 +152,16 @@ renameBoard:
     content:
       application/json:
         schema:
-          $ref: '#/schemas/RenameBoard'
+          $ref: "#/schemas/RenameBoard"
   responses:
-    '201':
+    "201":
       description: Board created successfully
       content:
         application/json:
           schema:
-            $ref: '#/schemas/Board'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
+            $ref: "#/schemas/Board"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
 
 updateBoardFavorite:
   summary: Update a board favorite
@@ -179,18 +178,16 @@ updateBoardFavorite:
     content:
       application/json:
         schema:
-          $ref: '#/schemas/UpdateBoardFavorite'
+          $ref: "#/schemas/UpdateBoardFavorite"
   responses:
-    '201':
+    "201":
       description: Board created successfully
       content:
         application/json:
           schema:
-            $ref: '#/schemas/Board'
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-
-
+            $ref: "#/schemas/Board"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
 
 deleteBoard:
   summary: Delete a board
@@ -203,9 +200,9 @@ deleteBoard:
       schema:
         type: string
   responses:
-    '204':
+    "204":
       description: Board deleted successfully
-    '401':
-      $ref: '../shared/responses.yaml#/UnauthorizedError'
-    '404':
-      $ref: '../shared/responses.yaml#/NotFoundError'
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"

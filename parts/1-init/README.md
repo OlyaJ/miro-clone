@@ -1,7 +1,7 @@
 # Создание проекта
 
-
 **1. Инициализация репозитория**
+
 ```
 bash
 
@@ -13,4 +13,3 @@ npm create vite@latest
 **3. В `index.html` заменяем путь до `main.tsx`**
 
 `src/app/main.tsx`
-

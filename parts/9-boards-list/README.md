@@ -1,6 +1,6 @@
 **1. Скопируйте вайбкодинг результат в проект**
 
-`boards-list.page.tsx` -> `features/boards-list` 
+`boards-list.page.tsx` -> `features/boards-list`
 `boards.ts` -> `shared/api/mocks/handlers`
 `boards.yaml` -> `shared/api/schemas/endpoints`
 

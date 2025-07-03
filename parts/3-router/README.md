@@ -13,17 +13,19 @@ npm i react-router-dom
 Скопировать `3-router/app/router.ts` и `3-router/app/root.ts` в `src/app`
 
 И подключаем в `src/main.tsx`
+
 ```tsx
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
 ```
 
 **4 Меняем формат public api**
 
 `eslint.boundaries.js`
+
 ```js
   {
     rules: {
@@ -47,7 +49,6 @@ createRoot(document.getElementById("root")!).render(
 
 Можно заменить `features` на `3-router/features`
 
-
 **6 Тестируем переход по ссылкам и получение boardId**
 
 ```tsx
@@ -56,10 +57,11 @@ createRoot(document.getElementById("root")!).render(
 ```
 
 ```tsx
-const params = useParams<PathParams[typeof ROUTES.BOARD]>()
+const params = useParams<PathParams[typeof ROUTES.BOARD]>();
 ```
 
 `src/app/app.tsx`
+
 ```tsx
 export function App() {
   const location = useLocation();

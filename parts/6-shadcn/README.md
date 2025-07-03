@@ -5,21 +5,22 @@ npm install tailwindcss @tailwindcss/vite
 ```
 
 `src/app/index.css`
+
 ```css
 @import "tailwindcss";
 ```
 
 `vite.config.ts`
-```ts
 
-import tailwindcss from "@tailwindcss/vite"
+```ts
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [
     // other plugins
-    tailwindcss()
+    tailwindcss(),
   ],
-})
+});
 ```
 
 **2. Добавляем shadcn**
@@ -29,11 +30,13 @@ npx shadcn@latest init
 ```
 
 Устраняем проблему
+
 ```bash
 npm i tw-animate-css
 ```
 
 Меняем положение компонентов в `components.json`
+
 ```json
 {
   "aliases": {
@@ -42,10 +45,9 @@ npm i tw-animate-css
     "ui": "@/shared/ui/kit",
     "lib": "@/shared/lib",
     "hooks": "@/shared/lib/react"
-  },
+  }
 }
 ```
-
 
 Переносим утилиты для работы с классами
 
@@ -56,4 +58,3 @@ npm i tw-animate-css
 ```bash
 npx shadcn@latest add button
 ```
-
