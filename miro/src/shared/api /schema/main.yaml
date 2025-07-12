@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: Miro-like Collaborative Whiteboard API
+  description: API for a collaborative whiteboard application similar to Miro
+  version: 1.0.0
+paths:
+  /boards:
+    get:
+      $ref: "./endpoints/boards.yaml#/getAllBoards"
+
+    post:
+      $ref: "./endpoints/boards.yaml#/createBoard"
+
+  /boards/{boardId}:
+    delete:
+      $ref: "./endpoints/boards.yaml#/deleteBoard"
