@@ -7,9 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "api": "npx openapi-typescript ./miro/src/shared/api/schema/main.yaml -o ./miro/src/shared/api/schema/generated.ts"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.83.0",
+    "openapi-fetch": "^0.14.0",
+    "openapi-react-query": "^0.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.5.2"
@@ -25,6 +29,9 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "msw": "^2.10.4",
+    "openapi-msw": "^1.2.0",
+    "openapi-typescript": "^7.8.0",
     "prettier": "^3.6.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",

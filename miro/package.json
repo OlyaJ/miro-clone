@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "api": "npx openapi-typescript ./miro/src/shared/api/schema/main.yaml -o ./miro/src/shared/api/schema/generated.ts"
   },
   "dependencies": {
     "react": "^19.1.0",
