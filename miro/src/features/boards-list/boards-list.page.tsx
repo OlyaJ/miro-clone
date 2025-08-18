@@ -24,7 +24,7 @@ function BoardsListPage() {
 
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
       <h1>Boards list {CONFIG.API_BASE_URL}</h1>
 
       <form onSubmit={e => {
@@ -44,7 +44,7 @@ function BoardsListPage() {
         </button>
       </form>
 
-      <div>
+      <div className="grid grid-cols-3 gap-4">
         {boardsQuery.data?.map((board) => (
           <Card key={board.id}>
             <CardHeader>
