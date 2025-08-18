@@ -11,12 +11,14 @@
     "api": "npx openapi-typescript ./miro/src/shared/api/schema/main.yaml -o ./miro/src/shared/api/schema/generated.ts"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.12",
     "@tanstack/react-query": "^5.83.0",
     "openapi-fetch": "^0.14.0",
     "openapi-react-query": "^0.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.5.2"
+    "react-router-dom": "^7.5.2",
+    "tailwindcss": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
