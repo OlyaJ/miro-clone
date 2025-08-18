@@ -1,6 +1,8 @@
 import { rqClient } from "@/shared/api/instance";
 import { CONFIG } from "@/shared/model/config";
 import { ROUTES } from "@/shared/model/routes";
+import { Button } from "@/shared/ui/kit/button";
+import { Card, CardFooter, CardHeader } from "@/shared/ui/kit/card";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, href } from "react-router-dom";
 
@@ -13,7 +15,7 @@ function BoardsListPage() {
       await queryClient.invalidateQueries(rqClient.queryOptions("get", "/boards"))
     }
   });
-  
+
   const deleteBoardMutation = rqClient.useMutation('delete', '/boards/{boardId}', {
     onSettled: async () => {
       await queryClient.invalidateQueries(rqClient.queryOptions("get", "/boards"))
@@ -42,20 +44,31 @@ function BoardsListPage() {
         </button>
       </form>
 
-      {boardsQuery.data?.map((board) => (
-        <div key={board.id}>
-          <Link to={href(ROUTES.BOARD, { boardId: board.id })}>
-            {board.name}
-          </Link>
-          <button
-            disabled={deleteBoardMutation.isPending}
-            onClick={() =>
-              deleteBoardMutation.mutate
-                ({ params: { path: { boardId: board.id } } })}>
-            Delete
-          </button>
-        </div>
-      ))}
+      <div>
+        {boardsQuery.data?.map((board) => (
+          <Card key={board.id}>
+            <CardHeader>
+              <Button asChild variant="link">
+                <Link to={href(ROUTES.BOARD, { boardId: board.id })}>
+                  {board.name}
+                </Link>
+              </Button>
+            </CardHeader>
+
+            <CardFooter>
+              <Button
+                variant="destructive"
+                disabled={deleteBoardMutation.isPending}
+                onClick={() =>
+                  deleteBoardMutation.mutate
+                    ({ params: { path: { boardId: board.id } } })}
+              >
+                Delete
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
