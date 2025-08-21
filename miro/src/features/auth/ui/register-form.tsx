@@ -4,7 +4,7 @@ import { Input } from "@/shared/ui/kit/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRegister } from "./use-register";
+import { useRegister } from "../model/use-register";
 
 const registerSchema = z.object({
     email: z.string({ required_error: "Email обязателен" })
