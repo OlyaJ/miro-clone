@@ -1,6 +1,7 @@
 import { HttpResponse, delay } from "msw";
 import { http } from "../http";
 import type { ApiSchemas } from "../../schema";
+import { createRefreshTokenCookie, generateTokens } from "../session";
 
 
 const userPasswords = new Map<string, string>();
@@ -13,7 +14,6 @@ const mockUsers: ApiSchemas["User"][] = [
 
 userPasswords.set("admin@gmail.com", "123456");
 
-const mockTokens = new Map<string, string>();
 
 export const authHandlers = [
   http.post("/auth/login", async ({ request }) => {
@@ -22,7 +22,6 @@ export const authHandlers = [
     const user = mockUsers.find((u) => u.email === body.email);
     const storedPassword = userPasswords.get(body.email);
 
-    await delay()
 
     if (!user || !storedPassword || storedPassword !== body.password) {
       return HttpResponse.json(
@@ -34,18 +33,30 @@ export const authHandlers = [
       );
     }
 
-    const token = `mock-token-${Date.now()}`;
+
+    const { accessToken, refreshToken } = await generateTokens({
+      userId: user.id,
+      email: user.email
+    })
     return HttpResponse.json(
       {
-        accessToken: token,
+        accessToken: accessToken,
         user,
       },
-      { status: 200 },
+      {
+        status: 200,
+
+        headers: {
+          "Set-Cookie": createRefreshTokenCookie(refreshToken)
+        }
+      },
     );
   }),
 
   http.post("/auth/register", async ({ request }) => {
     const body = (await request.json()) as ApiSchemas["RegisterRequest"];
+
+    await delay()
 
     if (mockUsers.some((u) => u.email === body.email)) {
       return HttpResponse.json(
@@ -57,22 +68,33 @@ export const authHandlers = [
       );
     }
 
+    await delay()
+
     const newUser: ApiSchemas["User"] = {
       id: String(mockUsers.length + 1),
       email: body.email,
     };
 
-    const token = `mock-token-${Date.now()}`;
+    const { accessToken, refreshToken } = await generateTokens({
+      userId: newUser.id,
+      email: newUser.email
+    })
+
     mockUsers.push(newUser);
     userPasswords.set(body.email, body.password);
-    mockTokens.set(body.email, token);
-
+  
     return HttpResponse.json(
       {
-        accessToken: token,
+        accessToken: accessToken,
         user: newUser,
       },
-      { status: 201 },
+      { status: 201,
+
+        headers: {
+          "Set-Cookie": createRefreshTokenCookie(refreshToken)
+        }
+       },
     );
   }),
 ];
+
