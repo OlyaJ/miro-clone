@@ -1,4 +1,4 @@
-import { HttpResponse } from "msw";
+import { HttpResponse, delay } from "msw";
 import { http } from "../http";
 import type { ApiSchemas } from "../../schema";
 
@@ -21,6 +21,8 @@ export const authHandlers = [
 
     const user = mockUsers.find((u) => u.email === body.email);
     const storedPassword = userPasswords.get(body.email);
+
+    await delay()
 
     if (!user || !storedPassword || storedPassword !== body.password) {
       return HttpResponse.json(

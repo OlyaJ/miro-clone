@@ -7,5 +7,5 @@ export const fetchClient = createFetchClient<ApiPaths>({
   baseUrl: CONFIG.API_BASE_URL,
 });
 
-export const rqClient = createClient(fetchClient);
+export const rqClient = createClient<ApiPaths>(fetchClient);
 

@@ -1,13 +1,14 @@
 import { ROUTES } from "@/shared/model/routes";
 import { AuthLayout } from "./auth-layout";
 import { Link } from "react-router-dom";
+import { RegisterForm } from "./register-form";
 
 function RegisterPage() {
   return (
     <AuthLayout
         title="Регистрация"
         description="Введите ваш email и пароль для входа в систему"
-        form={<form></form>}
+        form={<RegisterForm/>}
         footerText={
           <>
             Нет аккаунта? <Link to={ROUTES.LOGIN}>Войти</Link>

@@ -4,29 +4,34 @@ import { Input } from "@/shared/ui/kit/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useLogin } from "./use-login";
+import { useRegister } from "./use-register";
 
-const loginSchema = z.object({
+const registerSchema = z.object({
     email: z.string({ required_error: "Email обязателен" })
         .email("Неверный email"),
     password: z.string({ required_error: "Пароль обязателен" })
         .min(6, "Пароль должен быть не менее 6 символов"),
+    confirmPassword: z.string().optional()
+}).refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Пароли не совпадают"
 })
 
 
-export function LoginForm() {
-    const { errorMessage, isPending, login } = useLogin()
+export function RegisterForm() {
+
+    const { register, isPending, errorMessage } = useRegister()
 
     const form = useForm({
-        resolver: zodResolver(loginSchema),
+        resolver: zodResolver(registerSchema),
         defaultValues: { email: "", password: "" },
     })
 
 
-    const onSubmit = form.handleSubmit(login)
+    const onSubmit = form.handleSubmit(register)
 
     return (
-        <Form {...form}>
+        <Form { ...form }>
             <form className="flex flex-col gap-4" onSubmit={onSubmit}>
                 <FormField
                     control={form.control}
@@ -54,9 +59,22 @@ export function LoginForm() {
                         </FormItem>
                     )}
                 />
+                <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Подтвердите пароль</FormLabel>
+                            <FormControl>
+                                <Input type="password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 {errorMessage && <p className="text-destructive text-sm">{errorMessage}</p>}
-                <Button disabled={isPending} type="submit">Войти</Button>
+                <Button disabled={isPending} type="submit">Зарегистрироваться</Button>
             </form>
         </Form>
     )

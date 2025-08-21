@@ -83,3 +83,4 @@ register:
             $ref: "#/schemas/AuthResponse"
     "400":
       $ref: "../shared/responses.yaml#/BadRequestError"
+
