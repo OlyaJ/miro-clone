@@ -5,18 +5,23 @@ import { Providers } from "./providers";
 
 export const router = createBrowserRouter([
   {
-    element: 
-    <Providers>
-      <App/>
-    </Providers>,
+    element: (
+      <Providers>
+        <App />
+      </Providers>
+    ),
     children: [
       {
-        path: ROUTES.BOARDS,
-        lazy: () => import("@/features/boards-list/boards-list.page"),
-      },
-      {
-        path: ROUTES.BOARD,
-        lazy: () => import("@/features/board/board.page"),
+        children: [
+          {
+            path: ROUTES.BOARDS,
+            lazy: () => import("@/features/boards-list/boards-list.page"),
+          },
+          {
+            path: ROUTES.BOARD,
+            lazy: () => import("@/features/board/board.page"),
+          },
+        ],
       },
       {
         path: ROUTES.LOGIN,
