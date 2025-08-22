@@ -1,7 +1,7 @@
 import { HttpResponse, delay } from "msw";
 import { http } from "../http";
 import type { ApiSchemas } from "../../schema";
-import { createRefreshTokenCookie, generateTokens } from "../session";
+import { createRefreshTokenCookie, generateTokens, verifyToken } from "../session";
 
 
 const userPasswords = new Map<string, string>();
@@ -96,5 +96,57 @@ export const authHandlers = [
        },
     );
   }),
+
+  http.post("/auth/refresh", async ({ cookies }) => {
+    const refreshToken = cookies.refreshToken;
+  
+    if (!refreshToken) {
+      return HttpResponse.json(
+        {
+          message: "Refresh token не найден",
+          code: "REFRESH_TOKEN_MISSING",
+        },
+        { status: 401 },
+      );
+    }
+  
+    try {
+      const session = await verifyToken(refreshToken);
+      const user = mockUsers.find((u) => u.id === session.userId);
+  
+      if (!user) {
+        throw new Error("User not found");
+      }
+  
+      const { accessToken, refreshToken: newRefreshToken } = await generateTokens(
+        {
+          userId: user.id,
+          email: user.email,
+        },
+      );
+  
+      return HttpResponse.json(
+        {
+          accessToken,
+          user,
+        },
+        {
+          status: 200,
+          headers: {
+            "Set-Cookie": createRefreshTokenCookie(newRefreshToken),
+          },
+        },
+      );
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      return HttpResponse.json(
+        {
+          message: "Недействительный refresh token",
+          code: "INVALID_REFRESH_TOKEN",
+        },
+        { status: 401 },
+      );
+    }
+  })
 ];
 
