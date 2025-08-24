@@ -49,7 +49,10 @@ export const useSession = createGStore(() => {
                             logout(); 
                             return null;
                         }
-                    });
+                    })
+                    .finally(()=>{
+                        refreshTokenPromise = null
+                    })
             }
 
             const newToken = await refreshTokenPromise
