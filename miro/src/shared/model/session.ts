@@ -29,13 +29,13 @@ export const useSession = createGStore(() => {
 
     const session = token ? jwtDecode<Session>(token) : null
 
-    // session.ts
     const refreshToken = async (): Promise<string | null> => {
         if (!token) return null;
 
         const { exp } = jwtDecode<Session>(token);
+        
         const now = Math.floor(Date.now() / 1000);
-        const BUFFER = 30; // сек, чтобы не попасть ровно в момент истечения
+        const BUFFER = 30; 
 
         if (exp <= now + BUFFER) {
             if (!refreshTokenPromise) {
@@ -58,7 +58,7 @@ export const useSession = createGStore(() => {
             return await refreshTokenPromise;
         }
 
-        return token; // <-- ВАЖНО: вернуть текущий, если он ещё жив
+        return token; 
     };
 
     return { refreshToken, login, logout, session }
