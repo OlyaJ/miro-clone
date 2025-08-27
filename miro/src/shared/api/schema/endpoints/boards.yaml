@@ -4,9 +4,31 @@ schemas:
     required:
       - id
       - name
+      - createdAt
+      - updatedAt
+      - lastOpenedAt
+      - isFavorite
     properties:
       id:
         type: string
+      name:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      lastOpenedAt:
+        type: string
+        format: date-time
+      isFavorite:
+        type: boolean
+  RenameBoard:
+    type: object
+    required:
+      - name
+    properties:
       name:
         type: string
 
@@ -44,6 +66,32 @@ createBoard:
   responses:
     "201":
       description: Board created successfully
+      content:
+        application/json:
+          schema:
+            $ref: "#/schemas/Board"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+
+renameBoard:
+  summary: Rename a board
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: boardId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "#/schemas/RenameBoard"
+  responses:
+    "200":
+      description: Board renamed successfully
       content:
         application/json:
           schema:

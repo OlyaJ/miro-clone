@@ -1,7 +1,7 @@
 import createFetchClient from "openapi-fetch";
 import createClient from "openapi-react-query";
 import { CONFIG } from "../model/config";
-import type { ApiPaths, ApiSchemas } from "./schema";
+import type { ApiPaths } from "./schema";
 import { useSession } from '../model/session';
 
 export const fetchClient = createFetchClient<ApiPaths>({
