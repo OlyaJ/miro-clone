@@ -24,6 +24,7 @@ schemas:
         format: date-time
       isFavorite:
         type: boolean
+
   RenameBoard:
     type: object
     required:
@@ -32,21 +33,102 @@ schemas:
       name:
         type: string
 
+  UpdateBoardFavorite:
+    type: object
+    required:
+      - isFavorite
+    properties:
+      isFavorite:
+        type: boolean
+
+  BoardsList:
+    type: object
+    required:
+      - boards
+      - total
+      - totalPages
+    properties:
+      boards:
+        type: array
+        items:
+          $ref: "#/schemas/Board"
+      total:
+        type: integer
+      totalPages:
+        type: integer
+      currentPage:
+        type: integer
+
 getAllBoards:
   summary: Get all boards for current user
   security:
     - bearerAuth: []
+  parameters:
+    - name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+    - name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 10
+    - name: sort
+      in: query
+      required: false
+      schema:
+        type: string
+        default: createdAt
+        enum:
+          - createdAt
+          - updatedAt
+          - lastOpenedAt
+          - isFavorite
+          - name
+    - name: isFavorite
+      in: query
+      required: false
+      schema:
+        type: boolean
+    - name: search
+      in: query
+      required: false
+      schema:
+        type: string
   responses:
     "200":
       description: List of boards
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: "#/schemas/Board"
+            $ref: "#/schemas/BoardsList"
     "401":
       $ref: "../shared/responses.yaml#/UnauthorizedError"
+
+getBoardById:
+  summary: Get a board by Id
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: boardId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Board
+      content:
+        application/json:
+          schema:
+            $ref: "#/schemas/Board"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"
 
 createBoard:
   summary: Create a new board
@@ -92,6 +174,32 @@ renameBoard:
   responses:
     "200":
       description: Board renamed successfully
+      content:
+        application/json:
+          schema:
+            $ref: "#/schemas/Board"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+
+updateBoardFavorite:
+  summary: Update board favorite status
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: boardId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "#/schemas/UpdateBoardFavorite"
+  responses:
+    "200":
+      description: Board favorite status updated successfully
       content:
         application/json:
           schema:
